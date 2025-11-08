@@ -1,19 +1,26 @@
 ####### Regressions Part 1 #######
 ### ANSWER KEY ###
+####### Regressions Part 1 #######
 
 ### What is the first thing we have to do when we open R-Studio?
+
+### Load our libraries
+library(tidyverse)
 
 ### Disable Scientific Notation ###
 options(scipen = 999)
 
 #### Load the Data ####
 
-### Rather than just labelling your dataframe data or dataset, change it to something
+### Rather than just labeling your dataframe data or dataset, change it to something
 ### different. 
 
 afghanistan <- read.csv("https://raw.githubusercontent.com/ilaydaonder/POLS209/refs/heads/Lab-Report-4/afghanschools.csv")
 
 #### Bivariate Regression ####
+
+### What is a regression? 
+
 ### When we do a regression in R, the most basic function to call is the lm() function
 ### this function is the baseline function for all regression models in R.
 
@@ -37,6 +44,41 @@ afghanistan <- read.csv("https://raw.githubusercontent.com/ilaydaonder/POLS209/r
 ### regression <- lm(outcome ~ predictor1 + predictor 2 + ..., data = dataframe)
 
 ### Here we store our results as regression. 
+
+### We want to understand the relationship between treatment and testscores
+### but first, let's plot the data: 
+
+afghanistan |>
+  ggplot(mapping = aes(x=treatment)) + 
+  geom_histogram(bins = 50, 
+                 fill = 'maroon', color = 'black') + 
+  theme_bw()
+
+### What kind of variable is this?
+
+# Answer: This is a nominal variable. It has two distinct categories,
+# but these categories have no inherent ordering to them.
+
+afghanistan |>
+  ggplot(mapping = aes(x=testscores)) + 
+  geom_histogram(bins = 50, 
+                 fill = 'maroon', color = 'black') + 
+  theme_bw()
+
+### What kind of variable is this?
+
+# Answer: This is a continous variable. In the range of values this variable can 
+# take on (0-100), any possible value can be realized.
+
+afghanistan |>
+  ggplot(mapping = aes(x=treatment, y=testscores))+
+  geom_point() + 
+  theme_bw()
+
+### Do you see a relationship here?
+
+# Answer: There is no obvious relationship, testscores are not really clustered
+# across the values of treatment.
 
 ##### Try It #####
 ### Using the syntax outlined above and the data we have loaded, 
