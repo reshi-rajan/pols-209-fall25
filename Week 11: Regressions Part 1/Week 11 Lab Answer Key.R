@@ -1,0 +1,99 @@
+####### Regressions Part 1 #######
+### ANSWER KEY ###
+
+### What is the first thing we have to do when we open R-Studio?
+
+### Disable Scientific Notation ###
+options(scipen = 999)
+
+#### Load the Data ####
+
+### Rather than just labelling your dataframe data or dataset, change it to something
+### different. 
+
+afghanistan <- read.csv("https://raw.githubusercontent.com/ilaydaonder/POLS209/refs/heads/Lab-Report-4/afghanschools.csv")
+
+#### Bivariate Regression ####
+### When we do a regression in R, the most basic function to call is the lm() function
+### this function is the baseline function for all regression models in R.
+
+### To run a regression using the lm() function, you need to supply three key items:
+## 1. Your y-variable or DV 
+## 2. Your covariates (i.e. your IV and controls)
+## 3. Your dataframe 
+
+### Any time we have a regression of the form y = mx + b or y = b_0 + b_1*X + e
+### we must write this as: y ~ x, this applies especially with the lm() function.
+
+### We write something of the form: lm(outcome ~ predictor1 + predictor2 + ...)
+### The tilde, ~ , denotes an equation in R with the left-hand side being the 
+### outcome and the right-hand side being the predictor(s).
+
+### Unlike when we do descriptive statistics, with the lm() function we do not
+### use the form: dataframe$variable, instead we just use variable and supply 
+### the dataframe at the end. 
+
+### In R, a complete code for an lm() function looks like the following: 
+### regression <- lm(outcome ~ predictor1 + predictor 2 + ..., data = dataframe)
+
+### Here we store our results as regression. 
+
+##### Try It #####
+### Using the syntax outlined above and the data we have loaded, 
+### estimate a relationship where treatment predicts testscore. Label this 
+### regression Model1
+
+Model1 <- lm(testscores ~ treatment, data = afghanistan)
+
+#### The Summary Function ####
+### Running the line above does not give us much information on our regression,
+### it just stores our results in the global environment, to actually read our data
+### we use the summary function below:
+
+summary(Model1)
+
+### Run the summary function. 
+
+### Running the summary function should produce a list of results starting with:
+
+#>  Call:
+#> lm(formula = y ~ x, data = dataframe)
+
+### THE MOST IMPORTANT PART OF THIS TABLE IS THE COEFFICIENTS!
+
+### If you look at the coefficients portion, you should see as rows: 
+## 1. The Intercept
+## 2. The covariates 
+
+### As columns, you will ALWAYS see: 
+## 1. Estimate (this is an estimate of your beta coefficent, aka the slope)
+## 2. Std. Error (this is the standard error or how far off our slope could be)
+## 3. t value (this is the estimate divided by the standard error)
+## 4. Pr(>|t|) (this is the p-value we are interested in)
+
+### In addition, underneath the coefficents and significance codes you will the 
+### R-Squared and Adjusted R-Squared Values, they tell us how good our model is 
+### at fitting our data (how good does movement in X predict movement in Y).
+
+#### Multi-Variate Regressions ####
+### As in the lab report, sometimes we want to control for things. Why? 
+
+### ANSWER: Sometimes we have variables that are correlated to both x and y,
+### if we do not account for them in our regression model, it can lead to biased
+### estimates of our slopes. This is not good if we want to figure out the 
+### correct relationship between our predictor and outcome. We have to control 
+### when we think there is a variable confounding our relationship of interest.
+
+##### Try It #####
+### Estimate a new model like Model1, but this time controlling for age, sheep, 
+### duration village, education head, number ppl hh, distance nearest school.
+
+### Call this Model2
+
+Model2 <- lm(testscores ~ treatment + girl + age + sheep + duration_village +
+               education_head + number_ppl_hh + distance_nearest_school,
+             data = afghanistan)
+
+### Run the summary() Function
+
+summary(Model2)
